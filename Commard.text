@@ -1,0 +1,30 @@
+docker -v // เช็คเวอร์ชันของ Docker
+docker run hello-world // ใช้คำสั่งนี้เพื่อรันคอนเทนเนอร์ Docker
+docker ps -all // แสดงรายการคอนเทนเนอร์ทั้งหมดที่มีอยู่
+docker images // แสดงรายการอิมเมจ Docker ที่มีอยู่ทั้งหมดในเครื่องของคุณ
+docker run busybox ping google.com // รันคอนเทนเนอร์จากอิมเมจ busybox และใช้คำสั่ง ping เพื่อทดสอบการเชื่อมต่อกับ google.com
+docker stop [container_id] // หยุดคอนเทนเนอร์ที่กำลังทำงานอยู่ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps
+docker pull [image_name] // ดึงอิมเมจจาก Docker Hub หรือรีจิสตรีอื่นๆ โดยใช้ชื่ออิมเมจ
+docker create busybox ping google.com // สร้างคอนเทนเนอร์จากอิมเมจ busybox แต่ไม่เริ่มทำงานทันที
+docker start [container_id] // เริ่มคอนเทนเนอร์ที่ถูกสร้างขึ้นแล้ว โดยใช้ container_id ที่ได้จากคำสั่ง docker create
+docker ps // แสดงรายการคอนเทนเนอร์ที่กำลังทำงานอยู่
+docker rm [container_id] // ลบคอนเทนเนอร์ที่ไม่ต้องการ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps -all
+docker system prune  // ลบคอนเทนเนอร์ที่หยุดทำงานแล้ว, อิมเมจที่ไม่ได้ใช้งาน, และเครือข่ายที่ไม่ได้ใช้งานทั้งหมด เพื่อเพิ่มพื้นที่ว่างในระบบของคุณ
+docker run nginx // รันคอนเทนเนอร์จากอิมเมจ nginx เพื่อให้บริการเว็บเซิร์ฟเวอร์
+docker exec -it [container_id] sh // ออกจากคอนเทนเนอร์ที่กำลังทำงานอยู่ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps
+docker exec -it [container_id] bash // ออกจากคอนเทนเนอร์ที่กำลังทำงานอยู่ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps และเข้าสู่เชลล์ bash ของคอนเทนเนอร์นั้น
+cd /usr/share/nginx/html // เปลี่ยนไดเรกทอรีไปยังโฟลเดอร์ที่เก็บไฟล์เว็บในคอนเทนเนอร์ nginx
+cat index.html // แสดงเนื้อหาของไฟล์ index.html ที่อยู่ในคอนเทนเนอร์ nginx
+docker run -d -p 8000:80 nginx // รันคอนเทนเนอร์จากอิมเมจ nginx ในโหมด detached และแมปพอร์ต 8000 ของโฮสต์ไปยังพอร์ต 80 ของคอนเทนเนอร์
+docker image inspect nginx // แสดงรายละเอียดของอิมเมจ nginx รวมถึงข้อมูลเกี่ยวกับเลเยอร์และการตั้งค่าต่างๆ
+docker image rm [container_id] // ลบอิมเมจที่ไม่ต้องการ โดยใช้ container_id ที่ได้จากคำสั่ง docker images
+docker pull wordpress // ดึงอิมเมจ WordPress จาก Docker Hub เพื่อใช้ในการสร้างคอนเทนเนอร์สำหรับเว็บไซต์ WordPress ของคุณ
+docker pull mysql // ดึงอิมเมจ MySQL จาก Docker Hub เพื่อใช้ในการสร้างคอนเทนเนอร์สำหรับฐานข้อมูล MySQL ของคุณ
+docker pull phpmyadmin/phpmyadmin // ดึงอิมเมจ phpMyAdmin จาก Docker Hub เพื่อใช้ในการสร้างคอนเทนเนอร์สำหรับการจัดการฐานข้อมูล MySQL ของคุณผ่านเว็บอินเตอร์เฟส
+docker network create wordpress // สร้างเครือข่าย Docker ชื่อ "wordpress" เพื่อให้คอนเทนเนอร์ WordPress, MySQL, และ phpMyAdmin สามารถสื่อสารกันได้
+docker network ls // แสดงรายการเครือข่าย Docker ที่มีอยู่ทั้งหมดในระบบของคุณ
+docker run --name mysql --network wordpress -e MYSQL_ROOT_PASSWORD=1111 -e MYSQL_DATABASE=wordpress_db -e MYSQL_USER=wordpress -e MYSQL_PASSWORD=wordpress -d mysql:5.7 // รันคอนเทนเนอร์ MySQL ในเครือข่าย "wordpress" พร้อมตั้งค่ารหัสผ่านและฐานข้อมูลสำหรับ WordPress
+docker run --name pma --network wordpress -p 8888:80 -e PMA_ARBITRARY=1 -d phpmyadmin/phpmyadmin // รันคอนเทนเนอร์ phpMyAdmin ในเครือข่าย "wordpress" และแมปพอร์ต 8888 ของโฮสต์ไปยังพอร์ต 80 ของคอนเทนเนอร์
+docker run -d --name wordpress --network wordpress -p 888:80 -e WORDPRESS_DB_HOST=mysql -e WORDPRESS_DB_USER=wordpress -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_NAME=wordpress_db wordpress // รันคอนเทนเนอร์ WordPress ในเครือข่าย "wordpress" และแมปพอร์ต 888 ของโฮสต์ไปยังพอร์ต 80 ของคอนเทนเนอร์ พร้อมตั้งค่าการเชื่อมต่อฐานข้อมูล MySQL
+
+password : yYhdI1ygqNTi4oZ2hA
